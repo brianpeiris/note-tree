@@ -234,7 +234,7 @@
     class:normal={mode === modes.normal}
     class:insert={mode === modes.insert}
   />
-  <div on:keydown={handleKey}>
+  <div class="items" on:keydown={handleKey}>
     {#each items as item, i}
       <Item
         focusedId={focused.id}
@@ -247,8 +247,16 @@
 </main>
 
 <style>
-  main {
+  :global(body) {
     display: flex;
+    justify-content: center;
+  }
+  main {
+    display: grid;
+    grid-template-columns: 20px auto;
+  }
+  .items {
+    width: 500px;
   }
   .mode {
     width: 10px;
