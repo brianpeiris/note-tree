@@ -12,6 +12,8 @@
   let focused = items[0];
   let noteEls = {};
 
+  let action = null;
+
   const motions = {
     moveTo(el, index) {
       el.selectionStart = el.selectionEnd = index;
@@ -56,7 +58,7 @@
     if (mode === modes.normal) {
       let handled = true;
       const noteEl = noteEls[focused.id].textarea;
-      switch (e.key) {
+      switch (action || e.key) {
         case "j":
           {
             if (focused.children.length) {
@@ -205,6 +207,24 @@
         case "A":
           motions.moveTo(noteEl, noteEl.value.length);
           mode = modes.insert;
+          break;
+        case "d":
+          if (!action) {
+            action = "d";
+            break;
+          }
+          if (e.key === "d") {
+            const arr = focused.arr;
+            const index = arr.indexOf(focused);
+            arr.splice(index, 1);
+            if (arr.length) {
+              focused = arr[Math.min(arr.length - 1, index)];
+            } else {
+              focused = focused.parent;
+            }
+            items = items
+          }
+          action = null;
           break;
         case "F5":
           handled = false;
