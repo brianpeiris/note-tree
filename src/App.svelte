@@ -253,7 +253,7 @@
           break;
         case "u":
           location.href =
-            path.length < 2 ? "/" : `/?id=${path.slice(-2)[0].id}`;
+            path.length < 2 ? "." : `?id=${path.slice(-2)[0].id}`;
           break;
         case "g":
           if (!action) {
@@ -330,7 +330,7 @@
 
 <main>
   <div class="path">
-    <a href="/">root</a>&gt;{#each path as part, i}
+    <a href=".">root</a>&gt;{#each path as part, i}
       <a href="?id={part.id}">{part.content}</a
       >{#if i !== path.length - 1}&gt;{/if}
     {/each}
