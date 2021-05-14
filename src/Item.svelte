@@ -2,8 +2,10 @@
 
 <script>
   import { onMount, afterUpdate } from "svelte";
+  import { modes } from "./constants.js";
 
   export let item = null;
+  export let mode = null;
   export let focusedId = null;
   export let noteEls = null;
   export let textarea = null;
@@ -24,6 +26,8 @@
 <div id={item.id}>
   <input
     class:focused={item.id === focusedId}
+    class:normal={mode === modes.normal}
+    class:insert={mode === modes.insert}
     value={item.content}
     bind:this={textarea}
     on:input={(e) => changeNote(e.target.value)}
@@ -31,6 +35,7 @@
   <div class="children">
     {#each item.children as child}
       <svelte:self
+        {mode}
         {focusedId}
         bind:this={noteEls[child.id]}
         item={child}
@@ -50,5 +55,11 @@
   input {
     display: block;
     width: 100%;
+  }
+  input.focused.normal {
+    color: blue;
+  }
+  input.focused.insert {
+    color: green;
   }
 </style>

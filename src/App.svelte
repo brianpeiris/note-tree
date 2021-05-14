@@ -1,12 +1,14 @@
 <script>
-  import { onMount } from "svelte";
+  import { onMount, afterUpdate } from "svelte";
   import { firstIndexOf, lastIndexOf } from "./strings.js";
   import { randomId } from "./items.js";
+  import { modes } from "./constants.js";
   import Item from "./Item.svelte";
 
+  export let full = null;
   export let items = null;
+  export let path = null;
 
-  const modes = { normal: Symbol.for("normal"), insert: Symbol.for("insert") };
   let mode = modes.normal;
 
   let focused = items[0];
@@ -54,8 +56,18 @@
     },
   };
 
+  function save(items) {
+    const saved = items.map((item) => {
+      const savedItem = { ...item };
+      delete savedItem.parent;
+      delete savedItem.arr;
+      savedItem.children = save(savedItem.children);
+      return savedItem;
+    });
+    return saved;
+  }
+
   function handleKey(e) {
-    console.log(e.key);
     if (mode === modes.normal) {
       let handled = true;
       const noteEl = noteEls[focused.id].textarea;
@@ -221,6 +233,15 @@
           motions.moveTo(noteEl, noteEl.value.length);
           mode = modes.insert;
           break;
+        case "f":
+          if (focused.parent) {
+            location.href = `/?id=${focused.parent.id}`;
+          }
+          break;
+        case "u":
+          location.href =
+            path.length < 2 ? "/" : `/?id=${path.slice(-2)[0].id}`;
+          break;
         case "g":
           if (!action) {
             action = "g";
@@ -255,13 +276,15 @@
           if (e.key === "d") {
             const arr = focused.arr;
             const index = arr.indexOf(focused);
-            arr.splice(index, 1);
-            if (arr.length) {
-              focused = arr[Math.min(arr.length - 1, index)];
-            } else {
-              focused = focused.parent;
+            if (focused.parent || arr.length !== 1) {
+              arr.splice(index, 1);
+              if (arr.length) {
+                focused = arr[Math.min(arr.length - 1, index)];
+              } else {
+                focused = focused.parent;
+              }
+              items = items;
             }
-            items = items;
           }
           action = null;
           break;
@@ -281,12 +304,20 @@
           break;
       }
     }
+    localStorage.setItem("items", JSON.stringify(save(full), null, 2));
   }
 
   onMount(() => {});
+  afterUpdate(() => {});
 </script>
 
 <main>
+  <div class="path">
+    <a href="/">root</a>&gt;{#each path as part, i}
+      <a href="?id={part.id}">{part.content}</a
+      >{#if i !== path.length - 1}&gt;{/if}
+    {/each}
+  </div>
   <div
     class="mode"
     class:normal={mode === modes.normal}
@@ -295,6 +326,7 @@
   <div class="items" on:keydown={handleKey}>
     {#each items as item, i}
       <Item
+        {mode}
         focusedId={focused.id}
         bind:this={noteEls[item.id]}
         {item}
@@ -311,7 +343,14 @@
   }
   main {
     display: grid;
-    grid-template-columns: 20px auto;
+    grid-template: auto / 20px auto;
+  }
+  .path {
+    padding: 0.5em;
+    grid-column: span 2;
+  }
+  .path a {
+    padding: 0 5px;
   }
   .items {
     width: 500px;
