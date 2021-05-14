@@ -353,7 +353,7 @@
   </div>
 </main>
 
-<svelte:head><title>orglite</title></svelte:head>
+<svelte:head><title>note-tree</title></svelte:head>
 
 <style>
   :global(body) {
