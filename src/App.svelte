@@ -219,7 +219,7 @@
               focused.content.substring(selectionStart + 1);
             focused.selectionStart = selectionStart;
             mode = modes.insert;
-            items = items
+            items = items;
           }
           break;
         case "C":
@@ -266,11 +266,12 @@
           action = null;
           break;
         case ">":
-          if (!action) {
-            action = ">";
-            break;
-          }
-          if (e.key === ">") {
+          {
+            if (!action) {
+              action = ">";
+              break;
+            }
+
             const index = focused.arr.indexOf(focused);
             focused.arr.splice(index, 1);
             const prev = focused.arr[index - 1];
@@ -278,15 +279,17 @@
             focused.arr = prev.children;
             focused.parent = prev;
             items = items;
+
+            action = null;
           }
-          action = null;
           break;
         case "d":
-          if (!action) {
-            action = "d";
-            break;
-          }
-          if (e.key === "d") {
+          {
+            if (!action) {
+              action = "d";
+              break;
+            }
+
             const arr = focused.arr;
             const index = arr.indexOf(focused);
             if (focused.parent || arr.length !== 1) {
@@ -298,8 +301,9 @@
               }
               items = items;
             }
+
+            action = null;
           }
-          action = null;
           break;
         case "F5":
           handled = false;
