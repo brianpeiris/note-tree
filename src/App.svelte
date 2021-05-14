@@ -23,11 +23,20 @@
     start: (el) => {
       motions.moveTo(el, 0);
     },
+    end: (el) => {
+      motions.moveTo(el, el.value.length);
+    },
+    lastChar: (el) => {
+      motions.moveTo(el, el.value.length - 1);
+    },
     firstChar: (el) => {
       const firstCharMatch = el.value.match(/\S/);
       if (firstCharMatch) {
         motions.moveTo(el, firstCharMatch.index);
       }
+    },
+    back: (el) => {
+      motions.moveTo(el, el.selectionStart - 1);
     },
     forward: (el) => {
       motions.moveTo(el, el.selectionStart + 1);
@@ -174,7 +183,7 @@
           motions.moveTo(noteEl, 0);
           break;
         case "$":
-          motions.moveTo(noteEl, noteEl.value.length - 1);
+          motions.lastChar(noteEl);
           break;
         case "b":
           motions.backWord(noteEl);
@@ -186,36 +195,39 @@
           motions.endWord(noteEl);
           break;
         case "h":
-          motions.moveTo(noteEl, noteEl.selectionStart - 1);
+          motions.back(noteEl);
           break;
         case "l":
-          motions.moveTo(noteEl, noteEl.selectionStart + 1);
+          motions.forward(noteEl);
           break;
         case "x":
           {
-            const el = noteEl;
-            const { value, selectionStart } = el;
+            const { selectionStart } = noteEl;
             focused.content =
-              value.substring(0, el.selectionStart) +
-              value.substring(el.selectionStart + 1);
-            items = items;
+              focused.content.substring(0, selectionStart) +
+              focused.content.substring(selectionStart + 1);
             focused.selectionStart = selectionStart;
+            items = items;
           }
           break;
         case "s":
           {
-            const el = noteEl;
-            const { value, selectionStart } = el;
-            el.value =
-              value.substring(0, el.selectionStart) +
-              value.substring(el.selectionStart + 1);
-            motions.moveTo(el, selectionStart);
+            const { selectionStart } = noteEl;
+            focused.content =
+              focused.content.substring(0, selectionStart) +
+              focused.content.substring(selectionStart + 1);
+            focused.selectionStart = selectionStart;
             mode = modes.insert;
+            items = items
           }
           break;
         case "C":
           focused.content = focused.content.substring(0, noteEl.selectionStart);
           mode = modes.insert;
+          items = items;
+          break;
+        case "D":
+          focused.content = focused.content.substring(0, noteEl.selectionStart);
           items = items;
           break;
         case "i":
@@ -230,7 +242,7 @@
           mode = modes.insert;
           break;
         case "A":
-          motions.moveTo(noteEl, noteEl.value.length);
+          motions.end(noteEl);
           mode = modes.insert;
           break;
         case "f":

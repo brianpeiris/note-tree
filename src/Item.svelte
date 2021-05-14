@@ -11,15 +11,16 @@
   export let textarea = null;
 
   function changeNote(val) {
-    delete item.selectionStart;
     item.content = val;
   }
 
   onMount(() => {});
   afterUpdate(() => {
     if (focusedId === item.id) textarea.focus();
-    if ("selectionStart" in item)
+    if ("selectionStart" in item) {
       textarea.selectionStart = textarea.selectionEnd = item.selectionStart;
+      delete item.selectionStart;
+    }
   });
 </script>
 
@@ -49,17 +50,14 @@
   .children {
     margin-left: 20px;
   }
-  .focused {
-    outline: 1px solid red;
-  }
   input {
     display: block;
     width: 100%;
   }
   input.focused.normal {
-    color: blue;
+    color: #0000d5;
   }
   input.focused.insert {
-    color: green;
+    color: darkgreen;
   }
 </style>
