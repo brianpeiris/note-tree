@@ -11,6 +11,7 @@ note-tree is modal like vim, with a "normal" mode for tree and cursor manipulati
 |binding|action|
 |-:|-|
 |`i`|enter insert mode|
+|`ctrl-[`|return to normal mode|
 |`j`|move to next item|
 |`k`|move to previous item|
 |`J`|move item down|
