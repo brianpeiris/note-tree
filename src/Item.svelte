@@ -9,18 +9,18 @@
   export let textarea = null;
 
   function changeNote(val) {
+    delete item.selectionStart;
     item.content = val;
   }
 
   onMount(() => {
-    console.log("mount", item.id, item.content);
   });
   afterUpdate(() => {
     if (focusedId === item.id) textarea.focus();
+    if ("selectionStart" in item) textarea.selectionStart = textarea.selectionEnd = item.selectionStart;
   });
 </script>
 
-<main>
   <div id={item.id}>
     <textarea
       class:focused={item.id === focusedId}
@@ -34,7 +34,6 @@
       {/each}
     </div>
   </div>
-</main>
 
 <style>
   .children {

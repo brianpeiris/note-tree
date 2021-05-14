@@ -52,90 +52,97 @@
     },
   };
 
-  const ll = {
-  }
-
-
   function handleKey(e) {
     if (mode === modes.normal) {
       let handled = true;
       const noteEl = noteEls[focused.id].textarea;
       switch (e.key) {
         case "j":
-        if (focused.children.length) focused = focused.children[0];
-        else {
-        const arr = focused.parent
-        }
-          if (!focused.next) break;
-          focused = focused.next;
+          {
+            if (focused.children.length) {
+              focused = focused.children[0];
+            } else {
+              const index = focused.arr.indexOf(focused);
+              if (index === focused.arr.length - 1) {
+                if (focused.parent) {
+                  const parentIndex = focused.parent.arr.indexOf(
+                    focused.parent
+                  );
+                  focused = focused.parent.arr[parentIndex + 1];
+                }
+              } else {
+                focused = focused.arr[index + 1];
+              }
+            }
+          }
           break;
         case "J":
           {
-            const swapa = focused;
-
-            const arr = swapa.parent ? swapa.parent.children : items;
-            const index = arr.indexOf(swapa);
+            const arr = focused.arr;
+            const index = arr.indexOf(focused);
             if (index === arr.length - 1) break;
-
-            const swapb = swapa.next;
-            const next = swapb.next;
-
-            swapa.next = next;
-
-            swapb.next = swapa;
-
-            const prev = swapa.prev;
-            if (prev) {
-              swapa.prev = swapb;
-              swapb.prev = prev;
-              prev.next = swapb;
-            }
-
-            next.prev = swapa;
-
-            const temp = arr[index];
+            const temp = focused;
             arr[index] = arr[index + 1];
             arr[index + 1] = temp;
-
             items = items;
           }
           break;
         case "k":
-          if (!focused.prev) break;
-          focused = focused.prev;
-          noteEls[focused.id].textarea.focus();
+          {
+            const index = focused.arr.indexOf(focused);
+            if (index === 0) {
+              if (focused.parent) {
+                focused = focused.parent;
+              }
+            } else {
+              const prev = focused.arr[index - 1];
+              if (prev && prev.children.length) {
+                focused = prev.children[prev.children.length - 1];
+              } else {
+                focused = prev;
+              }
+            }
+          }
           break;
         case "K":
           {
-            const temp = items[focused];
-            items[focused] = items[focused - 1];
-            items[focused - 1] = temp;
-            focused--;
-            noteEl.focus();
+            const arr = focused.arr;
+            const index = arr.indexOf(focused);
+            if (index === 0) break;
+            const temp = focused;
+            arr[index] = arr[index - 1];
+            arr[index - 1] = temp;
+            items = items;
           }
           break;
         case "O":
           {
-            const temp = focused.prev;
-            focused.prev = {id: randomId(), content: "", parent: focused.parent, children: [], prev: temp, next: focused};
-            temp.next = focused.prev;
-            focused = focused.prev;
-            const arr = focused.parent ? focused.parent.children : items;
-            arr.splice(arr.indexOf(focused.next), 0, focused);
-            items = items;
+            const newItem = {
+              id: randomId(),
+              content: "",
+              arr: focused.arr,
+              parent: focused.parent,
+              children: [],
+            };
+            focused.arr.splice(focused.arr.indexOf(focused), 0, newItem);
+            focused = newItem;
             mode = modes.insert;
+            items = items;
           }
           break;
         case "o":
           {
-            const temp = focused.next;
-            focused.next = {id: randomId(), content: "", parent: focused.parent, children: [], prev: focused, next: temp};
-            if (temp) temp.prev = focused.next;
-            focused = focused.next;
-            const arr = focused.parent ? focused.parent.children : items;
-            arr.splice(arr.indexOf(focused.prev) + 1, 0, focused);
-            items = items;
+            const newItem = {
+              id: randomId(),
+              content: "",
+              arr: focused.arr,
+              parent: focused.parent,
+              children: [],
+            };
+            focused.arr.splice(focused.arr.indexOf(focused) + 1, 0, newItem);
+            focused = newItem;
             mode = modes.insert;
+            items = items;
           }
           break;
         case "^":
@@ -166,12 +173,11 @@
           {
             const el = noteEl;
             const { value, selectionStart } = el;
-            items[focused].content =
+            focused.content =
               value.substring(0, el.selectionStart) +
               value.substring(el.selectionStart + 1);
-            // TODO: Shouldn't have to use setTimeout here.
-            // selectionStart should probably be managed state
-            setTimeout(() => motions.moveTo(el, selectionStart));
+            items = items;
+            focused.selectionStart = selectionStart;
           }
           break;
         case "s":
@@ -219,7 +225,6 @@
   }
 
   onMount(() => {
-    console.log(noteEls, items);
   });
 </script>
 
@@ -231,15 +236,23 @@
   />
   <div on:keydown={handleKey}>
     {#each items as item, i}
-      <Item focusedId={focused.id} bind:this={noteEls[item.id]} {item} {noteEls} />
+      <Item
+        focusedId={focused.id}
+        bind:this={noteEls[item.id]}
+        {item}
+        {noteEls}
+      />
     {/each}
   </div>
 </main>
 
 <style>
+  main {
+    display: flex;
+  }
   .mode {
-    height: 10px;
-    margin-bottom: 10px;
+    width: 10px;
+    margin-right: 10px;
   }
   .mode.normal {
     background: lightblue;
