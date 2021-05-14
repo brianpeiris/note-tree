@@ -93,9 +93,10 @@
                   let next;
                   do {
                     curr = curr.parent;
+                    if (!curr) break;
                     next = curr.arr[curr.arr.indexOf(curr) + 1];
                   } while (!next);
-                  focused = next;
+                  if (next) focused = next;
                 }
               } else {
                 focused = focused.arr[index + 1];
