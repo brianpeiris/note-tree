@@ -336,6 +336,8 @@
   </div>
 </main>
 
+<svelte:head><title>orglite</title></svelte:head>
+
 <style>
   :global(body) {
     display: flex;

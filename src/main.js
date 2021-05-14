@@ -30,7 +30,7 @@ const app = new App({
   props: {
     path: deep && deep.path || [],
     full: parsed,
-    items: link((deep && deep.items) || parsed)
+    items: link((deep && deep.items) || parsed),
   },
 });
 
