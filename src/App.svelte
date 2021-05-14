@@ -248,7 +248,7 @@
           break;
         case "f":
           if (focused.parent) {
-            location.href = `/?id=${focused.parent.id}`;
+            location.href = `?id=${focused.parent.id}`;
           }
           break;
         case "u":
