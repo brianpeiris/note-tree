@@ -55,6 +55,7 @@
   };
 
   function handleKey(e) {
+    console.log(e.key);
     if (mode === modes.normal) {
       let handled = true;
       const noteEl = noteEls[focused.id].textarea;
@@ -67,10 +68,13 @@
               const index = focused.arr.indexOf(focused);
               if (index === focused.arr.length - 1) {
                 if (focused.parent) {
-                  const parentIndex = focused.parent.arr.indexOf(
-                    focused.parent
-                  );
-                  focused = focused.parent.arr[parentIndex + 1];
+                  let curr = focused;
+                  let next;
+                  do {
+                    curr = curr.parent;
+                    next = curr.arr[curr.arr.indexOf(curr) + 1];
+                  } while (!next);
+                  focused = next;
                 }
               } else {
                 focused = focused.arr[index + 1];
@@ -99,7 +103,11 @@
             } else {
               const prev = focused.arr[index - 1];
               if (prev && prev.children.length) {
-                focused = prev.children[prev.children.length - 1];
+                let curr = prev;
+                do {
+                  curr = curr.children[curr.children.length - 1];
+                } while (curr.children.length);
+                focused = curr;
               } else {
                 focused = prev;
               }
@@ -208,6 +216,32 @@
           motions.moveTo(noteEl, noteEl.value.length);
           mode = modes.insert;
           break;
+        case "g":
+          if (!action) {
+            action = "g";
+            break;
+          }
+          if (e.key === "g") {
+            focused = items[0];
+          }
+          action = null;
+          break;
+        case ">":
+          if (!action) {
+            action = ">";
+            break;
+          }
+          if (e.key === ">") {
+            const index = focused.arr.indexOf(focused);
+            focused.arr.splice(index, 1);
+            const prev = focused.arr[index - 1];
+            prev.children.push(focused);
+            focused.arr = prev.children;
+            focused.parent = prev;
+            items = items;
+          }
+          action = null;
+          break;
         case "d":
           if (!action) {
             action = "d";
@@ -222,7 +256,7 @@
             } else {
               focused = focused.parent;
             }
-            items = items
+            items = items;
           }
           action = null;
           break;
@@ -244,8 +278,7 @@
     }
   }
 
-  onMount(() => {
-  });
+  onMount(() => {});
 </script>
 
 <main>

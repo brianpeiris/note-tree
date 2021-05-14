@@ -22,7 +22,7 @@
 </script>
 
   <div id={item.id}>
-    <textarea
+    <input
       class:focused={item.id === focusedId}
       value={item.content}
       bind:this={textarea}
@@ -42,7 +42,7 @@
   .focused {
     outline: 1px solid red;
   }
-  textarea {
+  input {
     display: block;
     width: 100%;
   }
