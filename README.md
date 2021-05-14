@@ -1,5 +1,7 @@
 # note-tree
 
+https://brianpeiris.github.io/note-tree/
+
 A simple app for notes and tasks in a nested tree. Inspired by vim, emacs org mode, and workflowy.
 
 note-tree is modal like vim, with a "normal" mode for tree and cursor manipulation and an "insert" mode for text insertion.
