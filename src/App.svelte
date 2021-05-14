@@ -201,6 +201,11 @@
             mode = modes.insert;
           }
           break;
+        case "C":
+          focused.content = focused.content.substring(0, noteEl.selectionStart);
+          mode = modes.insert;
+          items = items;
+          break;
         case "i":
           mode = modes.insert;
           break;
