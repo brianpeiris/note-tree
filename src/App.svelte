@@ -357,9 +357,21 @@
 <svelte:head><title>note-tree</title></svelte:head>
 
 <style>
+  :global(*) {
+    box-sizing: border-box;
+  }
   :global(body) {
     display: flex;
     justify-content: center;
+    font-family: sans-serif;
+  }
+  :global(input) {
+    font-family: inherit;
+    font-size: inherit;
+    padding: 0.4em;
+    margin-bottom: 0.5em;
+    border: 1px solid #ccc;
+    border-radius: 2px;
   }
   main {
     display: grid;
@@ -373,7 +385,7 @@
     padding: 0 5px;
   }
   .items {
-    width: 500px;
+    width: min(80vw, 500px);
   }
   .mode {
     width: 10px;
