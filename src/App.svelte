@@ -158,7 +158,9 @@
             };
             focused.arr.splice(focused.arr.indexOf(focused), 0, newItem);
             focused = newItem;
-            mode = modes.insert;
+            if (!e.altKey) {
+              mode = modes.insert;
+            }
             items = items;
           }
           break;
@@ -173,7 +175,9 @@
             };
             focused.arr.splice(focused.arr.indexOf(focused) + 1, 0, newItem);
             focused = newItem;
-            mode = modes.insert;
+            if (!e.altKey) {
+              mode = modes.insert;
+            }
             items = items;
           }
           break;

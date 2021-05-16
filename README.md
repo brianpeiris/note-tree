@@ -18,6 +18,8 @@ note-tree is modal like vim, with a "normal" mode for tree and cursor manipulati
 |`K`|move item up|
 |`o`|add item below|
 |`O`|add item above|
+|`alt-o`|add item below and stay in normal mode|
+|`alt-O`|add item above and stay in normal mode|
 |`>>`|make item a child of previous item|
 |`dd`|delete item|
 |`f`|focus sub-tree|
