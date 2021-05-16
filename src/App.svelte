@@ -377,8 +377,6 @@
   </div>
 </main>
 
-<svelte:head><title>note-tree</title></svelte:head>
-
 <style>
   :global(*) {
     box-sizing: border-box;
