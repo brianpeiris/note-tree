@@ -1,4 +1,4 @@
-rm -rf public/build
+rm -rf public
 npm run build
 
 pushd public
@@ -9,4 +9,3 @@ git commit -m 'deploy'
 git remote add origin git@github.com:brianpeiris/note-tree
 git push -u origin --force master:gh-pages
 popd
-
