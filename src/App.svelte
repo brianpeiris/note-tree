@@ -252,8 +252,7 @@
           }
           break;
         case "u":
-          location.href =
-            path.length < 2 ? "." : `?id=${path.slice(-2)[0].id}`;
+          location.href = path.length < 2 ? "." : `?id=${path.slice(-2)[0].id}`;
           break;
         case "g":
           if (!action) {
