@@ -1,4 +1,4 @@
-# note-tree
+# note-tree [![tests](https://github.com/brianpeiris/note-tree/actions/workflows/tests.yml/badge.svg)](https://github.com/brianpeiris/note-tree/actions/workflows/tests.yml)
 
 https://brianpeiris.github.io/note-tree/
 
