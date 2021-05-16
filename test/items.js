@@ -4,9 +4,10 @@ import {link} from "../src/items.js";
 test("link", t=> {
   const a = {};
   const b = {};
-  const linked = link([a, b]);
-  t.is(a.next, b);
-  t.is(b.prev, a);
+  const items = [a, b];
+  const linked = link(items);
+  t.is(a.arr, items);
+  t.is(b.arr, items);
 });
 
 test("link nested", t=> {
@@ -19,15 +20,8 @@ test("link nested", t=> {
 
   const linked = link([a, b, e]);
 
-  t.is(a.next, b);
-  t.is(b.next, c);
-  t.is(c.next, d);
-  t.is(d.next, e);
-
-  t.is(c.prev, b);
-  t.is(d.prev, c);
-  t.is(e.prev, d);
-
   t.is(c.parent, b);
   t.is(d.parent, b);
+  t.is(c.arr, b.children);
+  t.is(d.arr, b.children);
 });
