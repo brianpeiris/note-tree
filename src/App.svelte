@@ -288,6 +288,25 @@
             action = null;
           }
           break;
+        case "<":
+          {
+            if (!action) {
+              action = "<";
+              break;
+            }
+
+            const index = focused.arr.indexOf(focused);
+            focused.arr.splice(index, 1);
+            const parentArr = focused.parent.arr;
+            const parentIndex = parentArr.indexOf(focused.parent);
+            parentArr.splice(parentIndex + 1, 0, focused);
+            focused.arr = parentArr;
+            focused.parent = focused.parent.parent;
+            items = items;
+
+            action = null;
+          }
+          break;
         case "d":
           {
             if (!action) {
