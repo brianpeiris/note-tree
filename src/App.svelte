@@ -272,12 +272,14 @@
             }
 
             const index = focused.arr.indexOf(focused);
-            focused.arr.splice(index, 1);
-            const prev = focused.arr[index - 1];
-            prev.children.push(focused);
-            focused.arr = prev.children;
-            focused.parent = prev;
-            items = items;
+            if (index !== 0) {
+              focused.arr.splice(index, 1);
+              const prev = focused.arr[index - 1];
+              prev.children.push(focused);
+              focused.arr = prev.children;
+              focused.parent = prev;
+              items = items;
+            }
 
             action = null;
           }

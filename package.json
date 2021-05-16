@@ -5,18 +5,25 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "start": "sirv public --no-clear --host"
+    "start": "sirv public --no-clear --host",
+    "test": "ava",
+    "coverage": "nyc report --reporter=html"
   },
   "ava": {
-    "require": [ "esm" ]
+    "require": [
+      "esm"
+    ]
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.0.0",
     "ava": "^3.15.0",
     "esm": "^3.2.25",
+    "nyc": "^15.1.0",
     "prettier": "^2.2.1",
     "prettier-plugin-svelte": "^2.2.0",
+    "puppeteer": "^9.1.1",
+    "puppeteer-to-istanbul": "^1.4.0",
     "rollup": "^2.3.4",
     "rollup-plugin-css-only": "^3.1.0",
     "rollup-plugin-livereload": "^2.0.0",
